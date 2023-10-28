@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:mini_project/constans/colors.dart';
 import 'package:mini_project/models/open_ai.dart';
 import 'package:mini_project/view_model/tafsir_ai.dart';
@@ -30,18 +31,18 @@ class _TafsirFormState extends State<TafsirForm> {
                     TextFormField(
                       controller: budgetController,
                       keyboardType: TextInputType.phone,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                           labelText: 'Surah',
-                          labelStyle: TextStyle(
-                            color: Colors.black,
+                          labelStyle: GoogleFonts.poppins(
+                            color: text,
                           ),
-                          enabledBorder: UnderlineInputBorder(
+                          enabledBorder: const UnderlineInputBorder(
                             borderSide: BorderSide(
                               color: Colors.black,
                             ),
                           ),
                           filled: true,
-                          fillColor: Color(0xFFe7e0eC)),
+                          fillColor: const Color.fromARGB(255, 238, 221, 232)),
                     ),
                     const SizedBox(height: 5),
                     // TextFormField(
@@ -75,11 +76,15 @@ class _TafsirFormState extends State<TafsirForm> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20.0),
                         ),
-                        title: const Text(
+                        title: Text(
                           "Peringatan",
+                          style:
+                              GoogleFonts.poppins(fontWeight: FontWeight.bold),
                         ),
-                        content: const Text(
-                            "Mohon isi semua kolom terlebih dahulu."),
+                        content: Text(
+                          "Mohon isi terlebih dahulu.",
+                          style: GoogleFonts.poppins(),
+                        ),
                         actions: [
                           ElevatedButton(
                             onPressed: () {
@@ -96,8 +101,9 @@ class _TafsirFormState extends State<TafsirForm> {
                                 ),
                               ),
                             ),
-                            child: const Text(
+                            child: Text(
                               "OK",
+                              style: GoogleFonts.poppins(),
                             ),
                           ),
                         ],
@@ -129,9 +135,9 @@ class _TafsirFormState extends State<TafsirForm> {
                     ),
                   ),
                 ),
-                child: const Text(
+                child: Text(
                   "CARI TAFSIR",
-                  style: TextStyle(color: Colors.white),
+                  style: GoogleFonts.poppins(color: Colors.white),
                 ),
               ),
               if (responseData.isNotEmpty) ...[
@@ -146,6 +152,7 @@ class _TafsirFormState extends State<TafsirForm> {
                             choice.text,
                             textAlign: TextAlign.justify,
                             selectionColor: appPurple,
+                            style: GoogleFonts.poppins(),
                           ),
                         ),
                     ],

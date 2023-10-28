@@ -1,40 +1,26 @@
 import 'package:flutter/material.dart';
 
-const appPurple = Color(0xFF431AA1);
+const appPurple = Color(0xFFB0578D);
 
 const appWhite = Color(0xFFFAF8FC);
-const appPurpleDark = Color(0xFF1e0771);
+const appPurpleDark = Color(0xFFB0578D);
 
-const appPurpleLight1 = Color(0xFF9345F2);
+const appPurpleLight1 = Color(0xFFD988B9);
 const appPurpleLight2 = Color(0xFFB9A2D8);
-const appOrange = Color(0xFFE6704A);
+
+const text = Color.fromARGB(255, 70, 32, 55);
 
 ThemeData appLight = ThemeData(
-  primaryColor: appPurple,
+  primaryColor: appPurpleDark,
   scaffoldBackgroundColor: appWhite,
   appBarTheme: const AppBarTheme(
     backgroundColor: appPurple,
   ),
   textTheme: const TextTheme(
       bodyLarge: TextStyle(
-        color: appPurpleDark,
+        color: text,
       ),
       bodyMedium: TextStyle(
-        color: appPurpleDark,
-      )),
-);
-
-ThemeData appDark = ThemeData(
-  primaryColor: appPurple,
-  scaffoldBackgroundColor: appPurpleDark,
-  appBarTheme: const AppBarTheme(
-    backgroundColor: appPurpleDark,
-  ),
-  textTheme: const TextTheme(
-      bodyLarge: TextStyle(
-        color: appWhite,
-      ),
-      bodyMedium: TextStyle(
-        color: appWhite,
+        color: text,
       )),
 );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:mini_project/constans/colors.dart';
 import 'package:mini_project/models/detail_surah.dart' as detail;
 import 'package:mini_project/view_model/detail_surah_viewmodel.dart';
@@ -17,7 +18,10 @@ class DetailSurahView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('SURAH ${surah["name"].toString().toUpperCase()}'),
+        title: Text(
+          'SURAH ${surah["name"].toString().toUpperCase()}',
+          style: GoogleFonts.poppins(), // Atur gaya font di sini
+        ),
         centerTitle: true,
       ),
       body: FutureBuilder<detail.DetailSurah>(
@@ -25,7 +29,9 @@ class DetailSurahView extends StatelessWidget {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
-              child: CircularProgressIndicator(),
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(appPurpleDark),
+              ),
             );
           }
           if (snapshot.hasError || snapshot.data == null) {
@@ -63,7 +69,7 @@ class DetailSurahView extends StatelessWidget {
                     Container(
                       margin: const EdgeInsets.only(top: 10),
                       decoration: BoxDecoration(
-                        color: Colors.grey.shade200,
+                        color: const Color.fromARGB(255, 246, 218, 229),
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Padding(
@@ -83,7 +89,10 @@ class DetailSurahView extends StatelessWidget {
                                 ),
                               ),
                               child: Center(
-                                child: Text("${index + 1}"),
+                                child: Text(
+                                  "${index + 1}",
+                                  style: GoogleFonts.poppins(),
+                                ),
                               ),
                             ),
                             Row(
@@ -99,10 +108,10 @@ class DetailSurahView extends StatelessWidget {
                                             borderRadius:
                                                 BorderRadius.circular(20.0),
                                           ),
-                                          title: const Center(
+                                          title: Center(
                                             child: Text(
                                               "BOOKMARK",
-                                              style: TextStyle(
+                                              style: GoogleFonts.poppins(
                                                 fontWeight: FontWeight.bold,
                                               ),
                                             ),
@@ -110,8 +119,9 @@ class DetailSurahView extends StatelessWidget {
                                           content: Column(
                                             mainAxisSize: MainAxisSize.min,
                                             children: [
-                                              const Text(
+                                              Text(
                                                 "Pilih jenis bookmark",
+                                                style: GoogleFonts.poppins(),
                                               ),
                                               const SizedBox(height: 10),
                                               Row(
@@ -139,8 +149,11 @@ class DetailSurahView extends StatelessWidget {
                                                                 .circular(10),
                                                       ),
                                                     ),
-                                                    child:
-                                                        const Text("LAST READ"),
+                                                    child: Text(
+                                                      "LAST READ",
+                                                      style:
+                                                          GoogleFonts.poppins(),
+                                                    ),
                                                   ),
                                                   ElevatedButton(
                                                     onPressed: () {
@@ -162,8 +175,11 @@ class DetailSurahView extends StatelessWidget {
                                                                 .circular(10),
                                                       ),
                                                     ),
-                                                    child:
-                                                        const Text("BOOKMARK"),
+                                                    child: Text(
+                                                      "BOOKMARK",
+                                                      style:
+                                                          GoogleFonts.poppins(),
+                                                    ),
                                                   ),
                                                 ],
                                               ),
@@ -175,10 +191,6 @@ class DetailSurahView extends StatelessWidget {
                                   },
                                   icon: const Icon(Icons.bookmark_add_outlined),
                                 ),
-                                IconButton(
-                                  onPressed: () {},
-                                  icon: const Icon(Icons.play_arrow),
-                                ),
                               ],
                             ),
                           ],
@@ -189,7 +201,7 @@ class DetailSurahView extends StatelessWidget {
                     Text(
                       ayat.text.arab,
                       textAlign: TextAlign.end,
-                      style: const TextStyle(
+                      style: GoogleFonts.poppins(
                         fontSize: 25,
                       ),
                     ),
@@ -197,7 +209,7 @@ class DetailSurahView extends StatelessWidget {
                     Text(
                       ayat.text.transliteration.en,
                       textAlign: TextAlign.justify,
-                      style: const TextStyle(
+                      style: GoogleFonts.poppins(
                         fontSize: 18,
                         fontStyle: FontStyle.italic,
                       ),
@@ -206,7 +218,7 @@ class DetailSurahView extends StatelessWidget {
                     Text(
                       ayat.translation.id,
                       textAlign: TextAlign.justify,
-                      style: const TextStyle(
+                      style: GoogleFonts.poppins(
                         fontSize: 18,
                       ),
                     ),
@@ -240,15 +252,15 @@ class DetailSurahView extends StatelessWidget {
                           title: Center(
                             child: Text(
                               "TAFSIR ${detailSurah.name.transliteration.id.toUpperCase()}",
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
+                              style: GoogleFonts.poppins(
+                                  fontWeight: FontWeight.bold, fontSize: 18),
                               textAlign: TextAlign.center,
                             ),
                           ),
                           content: Text(
                             detailSurah.tafsir.id,
                             textAlign: TextAlign.justify,
+                            style: GoogleFonts.poppins(fontSize: 14),
                           ),
                         );
                       },
@@ -270,14 +282,14 @@ class DetailSurahView extends StatelessWidget {
                         children: [
                           Text(
                             detailSurah.name.transliteration.id.toUpperCase(),
-                            style: const TextStyle(
+                            style: GoogleFonts.poppins(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
                                 color: appWhite),
                           ),
                           Text(
                             "( ${detailSurah.name.translation.id.toUpperCase()} )",
-                            style: const TextStyle(
+                            style: GoogleFonts.poppins(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
                                 color: appWhite),
@@ -285,8 +297,8 @@ class DetailSurahView extends StatelessWidget {
                           const SizedBox(height: 10),
                           Text(
                             "${detailSurah.numberOfVerses} Ayat | ${detailSurah.revelation.id}",
-                            style:
-                                const TextStyle(fontSize: 16, color: appWhite),
+                            style: GoogleFonts.poppins(
+                                fontSize: 16, color: appWhite),
                           ),
                         ],
                       ),

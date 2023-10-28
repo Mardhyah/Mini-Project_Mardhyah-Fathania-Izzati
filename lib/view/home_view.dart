@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:mini_project/constans/colors.dart';
-import 'package:mini_project/models/jus.dart' as detail;
+// import 'package:mini_project/models/jus.dart' as detail;
 import 'package:mini_project/models/surah.dart';
-import 'package:mini_project/view/detail_juz_view.dart';
+// import 'package:mini_project/view/detail_juz_view.dart';
 import 'package:mini_project/view/detail_surah_view.dart';
-import 'package:mini_project/view/search.dart';
+// import 'package:mini_project/view/search.dart';
 import 'package:mini_project/view/tafsir_form.dart';
 import 'package:mini_project/view_model/home_viewmodel.dart';
 
@@ -36,14 +37,14 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 
-  void _onJuzTap(BuildContext context, detail.Juz juz) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => DetailJuzView(juz: juz),
-      ),
-    );
-  }
+  // void _onJuzTap(BuildContext context, detail.Juz juz) {
+  //   Navigator.push(
+  //     context,
+  //     MaterialPageRoute(
+  //       builder: (context) => DetailJuzView(juz: juz),
+  //     ),
+  //   );
+  // }
 
   void _deleteBookmark(int id) {
     viewModel.deleteBookmark(id);
@@ -52,12 +53,12 @@ class _HomeViewState extends State<HomeView> {
     });
   }
 
-  void _startSearch() {
-    showSearch(
-      context: context,
-      delegate: CustomSearchDelegate(viewModel.surahList),
-    );
-  }
+  // void _startSearch() {
+  //   showSearch(
+  //     context: context,
+  //     delegate: CustomSearchDelegate(viewModel.surahList),
+  //   );
+  // }
 
   void _refreshData() async {
     await viewModel.fetchSurah();
@@ -69,17 +70,24 @@ class _HomeViewState extends State<HomeView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Al-Quran Apps "),
+        backgroundColor: appPurpleDark,
+        title: Text(
+          'Al-Quran Apps',
+          style: GoogleFonts.poppins(
+            fontWeight: FontWeight.bold,
+            fontSize: 20,
+          ),
+        ),
         centerTitle: true,
         actions: [
           IconButton(
             onPressed: _refreshData, // Buat fungsi untuk merefresh data
             icon: const Icon(Icons.refresh),
           ),
-          IconButton(
-            onPressed: _startSearch,
-            icon: const Icon(Icons.search),
-          ),
+          // IconButton(
+          //   onPressed: _startSearch,
+          //   icon: const Icon(Icons.search),
+          // ),
         ],
       ),
       body: DefaultTabController(
@@ -117,37 +125,38 @@ class _HomeViewState extends State<HomeView> {
                               child: SvgPicture.asset('assets/svgs/quran.svg'),
                             ),
                           ),
-                          const Padding(
-                            padding: EdgeInsets.all(20.0),
+                          Padding(
+                            padding: const EdgeInsets.all(20.0),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Row(
                                   children: [
-                                    Icon(
+                                    const Icon(
                                       Icons.menu_book_rounded,
                                       color: appWhite,
                                     ),
-                                    SizedBox(width: 5),
+                                    const SizedBox(width: 5),
                                     Text(
                                       "Terakhir dibaca",
-                                      style: TextStyle(color: appWhite),
+                                      style:
+                                          GoogleFonts.poppins(color: appWhite),
                                     ),
                                   ],
                                 ),
-                                SizedBox(height: 30),
+                                const SizedBox(height: 30),
                                 Text(
                                   "Loading..",
-                                  style: TextStyle(
+                                  style: GoogleFonts.poppins(
                                     color: appWhite,
-                                    fontSize: 20,
+                                    fontSize: 15,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                SizedBox(height: 10),
+                                const SizedBox(height: 10),
                                 Text(
                                   "",
-                                  style: TextStyle(
+                                  style: GoogleFonts.poppins(
                                     color: appWhite,
                                     fontSize: 15,
                                   ),
@@ -186,10 +195,10 @@ class _HomeViewState extends State<HomeView> {
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(20.0),
                                   ),
-                                  title: const Center(
+                                  title: Center(
                                     child: Text(
                                       "LAST READ",
-                                      style: TextStyle(
+                                      style: GoogleFonts.poppins(
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
@@ -197,8 +206,9 @@ class _HomeViewState extends State<HomeView> {
                                   content: Column(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
-                                      const Text(
+                                      Text(
                                         "Apakah anda yakin untuk menghapus last read?",
+                                        style: GoogleFonts.poppins(),
                                         textAlign: TextAlign.center,
                                       ),
                                       const SizedBox(height: 10),
@@ -211,10 +221,10 @@ class _HomeViewState extends State<HomeView> {
                                               Navigator.of(context)
                                                   .pop(); // Menutup dialog
                                             },
-                                            child: const Text(
+                                            child: Text(
                                               "Cancel",
-                                              style:
-                                                  TextStyle(color: appPurple),
+                                              style: GoogleFonts.poppins(
+                                                  color: appPurple),
                                             ),
                                           ),
                                           const SizedBox(width: 10),
@@ -229,9 +239,9 @@ class _HomeViewState extends State<HomeView> {
                                                   MaterialStateProperty.all<
                                                       Color>(appPurple),
                                             ),
-                                            child: const Text(
+                                            child: Text(
                                               "Delete",
-                                              style: TextStyle(
+                                              style: GoogleFonts.poppins(
                                                 color: Colors.white,
                                               ),
                                             ),
@@ -261,7 +271,7 @@ class _HomeViewState extends State<HomeView> {
                             print(lastRead);
                           }
                         },
-                        child: Container(
+                        child: SizedBox(
                           height: 150,
                           width: MediaQuery.of(context).size.width,
                           child: Stack(
@@ -281,16 +291,18 @@ class _HomeViewState extends State<HomeView> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    const Row(
+                                    Row(
                                       children: [
-                                        Icon(
+                                        const Icon(
                                           Icons.menu_book_rounded,
                                           color: appWhite,
                                         ),
-                                        SizedBox(width: 5),
+                                        const SizedBox(width: 5),
                                         Text(
-                                          "Terakhir dibaca",
-                                          style: TextStyle(color: appWhite),
+                                          'Terakhir dibaca',
+                                          style: GoogleFonts.poppins(
+                                            color: appWhite,
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -300,9 +312,9 @@ class _HomeViewState extends State<HomeView> {
                                         lastRead['surah']
                                             .toString()
                                             .replaceAll("+", "'"),
-                                        style: const TextStyle(
+                                        style: GoogleFonts.poppins(
                                           color: appWhite,
-                                          fontSize: 20,
+                                          fontSize: 19,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
@@ -311,9 +323,9 @@ class _HomeViewState extends State<HomeView> {
                                       lastRead == null
                                           ? "Belum ada data"
                                           : " Ayat ${lastRead['ayat']}",
-                                      style: const TextStyle(
+                                      style: GoogleFonts.poppins(
                                         color: appWhite,
-                                        fontSize: 15,
+                                        fontSize: 12,
                                       ),
                                     ),
                                   ],
@@ -327,14 +339,35 @@ class _HomeViewState extends State<HomeView> {
                   );
                 },
               ),
-              const TabBar(
+              TabBar(
                 labelColor: appPurpleDark,
                 unselectedLabelColor: Colors.grey,
                 indicatorColor: appPurpleDark,
                 tabs: [
-                  Tab(text: "Surah"),
-                  Tab(text: "Tafsir"),
-                  Tab(text: "Bookmark"),
+                  Tab(
+                    child: Text(
+                      'Surah',
+                      style: GoogleFonts.poppins(
+                          fontWeight:
+                              FontWeight.bold), // Atur gaya font di sini
+                    ),
+                  ),
+                  Tab(
+                    child: Text(
+                      'Tafsir',
+                      style: GoogleFonts.poppins(
+                          fontWeight:
+                              FontWeight.bold), // Atur gaya font di sini
+                    ),
+                  ),
+                  Tab(
+                    child: Text(
+                      'Bookmark',
+                      style: GoogleFonts.poppins(
+                          fontWeight:
+                              FontWeight.bold), // Atur gaya font di sini
+                    ),
+                  ),
                 ],
               ),
               Expanded(
@@ -347,7 +380,10 @@ class _HomeViewState extends State<HomeView> {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
                           return const Center(
-                            child: CircularProgressIndicator(),
+                            child: CircularProgressIndicator(
+                              valueColor:
+                                  AlwaysStoppedAnimation<Color>(appPurpleDark),
+                            ),
                           );
                         }
                         if (snapshot.hasError) {
@@ -374,17 +410,25 @@ class _HomeViewState extends State<HomeView> {
                                         AssetImage('assets/img/octagonal.png'),
                                   ),
                                 ),
-                                child: Center(child: Text("${surah.number}")),
+                                child: Center(
+                                    child: Text(
+                                  "${surah.number}",
+                                  style: GoogleFonts.poppins(),
+                                )),
                               ),
                               title: Text(
                                 surah.name.transliteration.id,
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold),
+                                style: GoogleFonts.poppins(
+                                    fontWeight: FontWeight.bold, color: text),
                               ),
                               subtitle: Text(
                                 "${surah.numberOfVerses} ayat | ${surah.revelation.id}",
+                                style: GoogleFonts.poppins(),
                               ),
-                              trailing: Text(surah.name.short),
+                              trailing: Text(
+                                surah.name.short,
+                                style: GoogleFonts.amiri(),
+                              ),
                             );
                           },
                         );
@@ -392,7 +436,7 @@ class _HomeViewState extends State<HomeView> {
                     ),
 
                     // Juz
-                    TafsirForm(),
+                    const TafsirForm(),
                     // FutureBuilder<List<detail.Juz>>(
                     //   future: viewModel.fetchJuz(),
                     //   builder: (context, snapshot) {
@@ -508,7 +552,9 @@ class _BookmarkListViewState extends State<BookmarkListView> {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(
-            child: CircularProgressIndicator(),
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(appPurpleDark),
+            ),
           );
         }
         if (snapshot.hasError) {
@@ -538,12 +584,19 @@ class _BookmarkListViewState extends State<BookmarkListView> {
                     image: AssetImage('assets/img/octagonal.png'),
                   ),
                 ),
-                child: Center(child: Text("${index + 1}")),
+                child: Center(
+                    child: Text(
+                  "${index + 1}",
+                  style: GoogleFonts.poppins(),
+                )),
               ),
-              title: Text("${data['surah'].toString().replaceAll("+", "'")}"),
+              title: Text(
+                data['surah'].toString().replaceAll("+", "'"),
+                style: GoogleFonts.poppins(),
+              ),
               subtitle: Text(
                 "Ayat ${data['ayat']} - via ${data['via']} ",
-                style: const TextStyle(color: Colors.grey),
+                style: GoogleFonts.poppins(color: Colors.grey),
               ),
               trailing: IconButton(
                 onPressed: () {

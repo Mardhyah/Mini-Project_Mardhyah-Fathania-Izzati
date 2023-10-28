@@ -42,7 +42,7 @@ class IntroductionView extends StatelessWidget {
                         width: double.infinity,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(30),
-                            color: const Color(0xFF672CBC)),
+                            color: const Color(0xFFB0578D)),
                         child: SvgPicture.asset('assets/svgs/splash.svg'),
                       ),
                       Positioned(
@@ -62,7 +62,7 @@ class IntroductionView extends StatelessWidget {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 40, vertical: 16),
                               decoration: BoxDecoration(
-                                  color: const Color(0xFFFF9B091),
+                                  color: const Color(0xFFF9B091),
                                   borderRadius: BorderRadius.circular(30)),
                               child: Text(
                                 'Get Started',
