@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:mini_project/constans/colors.dart';
+import 'package:mini_project/utils/constans/colors.dart';
 import 'dart:convert';
 import 'package:mini_project/models/detail_surah.dart' as detail;
 import 'package:mini_project/models/detail_surah.dart' hide Text;
@@ -12,8 +12,8 @@ class DetailSurahViewModel {
   AutoScrollController scrollControl = AutoScrollController();
   DataBaseManager database = DataBaseManager.instance;
 
-  void addBookmark(bool lastRead, DetailSurah surah, Verse ayat, int indexAyat,
-      BuildContext context) async {
+  Future<bool> addBookmark(bool lastRead, DetailSurah surah, Verse ayat,
+      int indexAyat, BuildContext context) async {
     Database db = await DataBaseManager.instance.db;
 
     bool flagExist = false;
@@ -65,6 +65,7 @@ class DetailSurahViewModel {
           duration: Duration(seconds: 2),
         ),
       );
+      return true; // Bookmark berhasil ditambahkan
     } else {
       Navigator.of(context).pop();
 
@@ -78,10 +79,8 @@ class DetailSurahViewModel {
           duration: Duration(seconds: 4),
         ),
       );
+      return false; // Gagal menambahkan bookmark karena sudah ada
     }
-
-    var data = await db.query("bookmark");
-    print(data);
   }
 
   Future<detail.DetailSurah> fetchSurah(int surahNumber) async {

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 import 'package:mini_project/view/home_view.dart';
 
 class IntroductionView extends StatelessWidget {
@@ -51,7 +50,6 @@ class IntroductionView extends StatelessWidget {
                         right: 0,
                         child: Center(
                           child: GestureDetector(
-                            behavior: HitTestBehavior.opaque,
                             onTap: () {
                               Navigator.of(context)
                                   .pushReplacement(MaterialPageRoute(

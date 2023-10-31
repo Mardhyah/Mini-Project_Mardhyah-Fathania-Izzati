@@ -42,16 +42,4 @@ class DataBaseManager {
     final Database db = await instance.db;
     db.close();
   }
-
-  Future<Map<String, dynamic>?> getLastRead() async {
-    Database db = await this.db;
-    List<Map<String, dynamic>> result = await db.query('bookmark',
-        where: 'last_read = 1', orderBy: 'id DESC', limit: 1);
-
-    if (result.isNotEmpty) {
-      return result.first;
-    } else {
-      return null;
-    }
-  }
 }

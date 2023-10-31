@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mini_project/constans/colors.dart';
+import 'package:mini_project/utils/constans/colors.dart';
 import 'package:mini_project/models/open_ai.dart';
 import 'package:mini_project/view_model/tafsir_ai.dart';
 
@@ -12,9 +12,8 @@ class TafsirForm extends StatefulWidget {
 }
 
 class _TafsirFormState extends State<TafsirForm> {
-  final RecommendationsViewModel modelview = RecommendationsViewModel();
-  final TextEditingController budgetController = TextEditingController();
-  // final TextEditingController cameraController = TextEditingController();
+  final TafsirViewModel modelview = TafsirViewModel();
+  final TextEditingController tafsirController = TextEditingController();
   List<Choice> responseData = [];
 
   @override
@@ -29,39 +28,31 @@ class _TafsirFormState extends State<TafsirForm> {
                 child: Column(
                   children: [
                     TextFormField(
-                      controller: budgetController,
-                      keyboardType: TextInputType.phone,
+                      controller: tafsirController,
                       decoration: InputDecoration(
-                          labelText: 'Surah',
-                          labelStyle: GoogleFonts.poppins(
-                            color: text,
-                          ),
-                          enabledBorder: const UnderlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Colors.black,
-                            ),
-                          ),
-                          filled: true,
-                          fillColor: const Color.fromARGB(255, 238, 221, 232)),
+                        labelText: 'Surah',
+                        focusedBorder: InputBorder.none,
+                        labelStyle: GoogleFonts.poppins(
+                          color: text,
+                        ),
+                        enabledBorder: const UnderlineInputBorder(
+                          borderSide: BorderSide(color: appPurpleDark),
+                        ),
+                        filled: true,
+                        fillColor: const Color.fromARGB(255, 238, 221, 232),
+                        suffixIcon: tafsirController.text.isNotEmpty
+                            ? IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    tafsirController.clear();
+                                    responseData = [];
+                                  });
+                                },
+                                icon: Icon(Icons.clear),
+                              )
+                            : null,
+                      ),
                     ),
-                    const SizedBox(height: 5),
-                    // TextFormField(
-                    //   controller: cameraController,
-                    //   keyboardType: TextInputType.phone,
-                    //   decoration: const InputDecoration(
-                    //     labelText: 'Ayat',
-                    //     labelStyle: TextStyle(
-                    //       color: Colors.black,
-                    //     ),
-                    //     enabledBorder: UnderlineInputBorder(
-                    //       borderSide: BorderSide(
-                    //         color: Colors.black,
-                    //       ),
-                    //     ),
-                    //     filled: true,
-                    //     fillColor: Color(0xFFe7e0eC),
-                    //   ),
-                    // ),
                     const SizedBox(height: 10),
                   ],
                 ),
@@ -69,7 +60,7 @@ class _TafsirFormState extends State<TafsirForm> {
               const SizedBox(height: 10),
               ElevatedButton(
                 onPressed: () async {
-                  if (budgetController.text.isEmpty) {
+                  if (tafsirController.text.isEmpty) {
                     showDialog(
                       context: context,
                       builder: (context) => AlertDialog(
@@ -115,7 +106,7 @@ class _TafsirFormState extends State<TafsirForm> {
                   try {
                     GptData newResponseData = await modelview.getTafsirQuran(
                       context,
-                      budgetController.text,
+                      tafsirController.text,
                       // cameraController.text,
                     );
 

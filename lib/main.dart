@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mini_project/constans/colors.dart';
+import 'package:mini_project/utils/constans/colors.dart';
 import 'package:mini_project/view/home_view.dart';
 import 'package:mini_project/view/introduction_view.dart';
 

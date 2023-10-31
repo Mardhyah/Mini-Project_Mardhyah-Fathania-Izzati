@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mini_project/constans/colors.dart';
-// import 'package:mini_project/models/jus.dart' as detail;
+import 'package:mini_project/utils/constans/colors.dart';
 import 'package:mini_project/models/surah.dart';
-// import 'package:mini_project/view/detail_juz_view.dart';
+import 'package:mini_project/view/bookmark_view.dart';
 import 'package:mini_project/view/detail_surah_view.dart';
-// import 'package:mini_project/view/search.dart';
 import 'package:mini_project/view/tafsir_form.dart';
 import 'package:mini_project/view_model/home_viewmodel.dart';
 
@@ -19,47 +17,30 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   final HomeViewModel viewModel = HomeViewModel(); // Inisialisasi view model
-  final searchController = TextEditingController();
-
+  // function untuk menangani ketika surah diklik
   void _onSurahTap(BuildContext context, Map<String, dynamic> surahData) {
     String surahName = surahData["name"];
-    int surahNumber =
-        surahData["number"]; // Pastikan ada "number" dalam data surah
+    int surahNumber = surahData["number"];
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => DetailSurahView(surah: {
-          "name": surahName,
-          "number": surahNumber,
-          // Kirimkan "number" juga
-        }),
+        builder: (context) => DetailSurahView(
+          surah: {
+            "name": surahName,
+            "number": surahNumber,
+          },
+        ),
       ),
     );
   }
 
-  // void _onJuzTap(BuildContext context, detail.Juz juz) {
-  //   Navigator.push(
-  //     context,
-  //     MaterialPageRoute(
-  //       builder: (context) => DetailJuzView(juz: juz),
-  //     ),
-  //   );
-  // }
-
+// function untuk menghapus bookmark (lastread)
   void _deleteBookmark(int id) {
     viewModel.deleteBookmark(id);
-    setState(() {
-      // Lakukan pembaruan tampilan atau data yang diperlukan di sini
-    });
+    setState(() {});
   }
 
-  // void _startSearch() {
-  //   showSearch(
-  //     context: context,
-  //     delegate: CustomSearchDelegate(viewModel.surahList),
-  //   );
-  // }
-
+  // function untuk memuat ulang data
   void _refreshData() async {
     await viewModel.fetchSurah();
     await viewModel.fetchLastRead();
@@ -84,10 +65,6 @@ class _HomeViewState extends State<HomeView> {
             onPressed: _refreshData, // Buat fungsi untuk merefresh data
             icon: const Icon(Icons.refresh),
           ),
-          // IconButton(
-          //   onPressed: _startSearch,
-          //   icon: const Icon(Icons.search),
-          // ),
         ],
       ),
       body: DefaultTabController(
@@ -98,9 +75,11 @@ class _HomeViewState extends State<HomeView> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               FutureBuilder<Map<String, dynamic>?>(
-                future: viewModel.fetchLastRead(),
+                future: viewModel
+                    .fetchLastRead(), // pemanggilan  fetchLastRead dari objek viewModel
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
+                    // Tampilan selama data masih dimuat/loading
                     return Container(
                       margin: const EdgeInsets.symmetric(vertical: 15),
                       decoration: BoxDecoration(
@@ -146,6 +125,7 @@ class _HomeViewState extends State<HomeView> {
                                 ),
                                 const SizedBox(height: 30),
                                 Text(
+                                  // Menampilkan pesan "Loading.." selama proses loading
                                   "Loading..",
                                   style: GoogleFonts.poppins(
                                     color: appWhite,
@@ -169,7 +149,10 @@ class _HomeViewState extends State<HomeView> {
                     );
                   }
 
+                  // Membuat variabel untuk menyimpan data terakhir yang dibaca.
                   Map<String, dynamic>? lastRead = snapshot.data;
+
+                  // Membuat tampilan untuk menampilkan surah terakhir yang dibaca.
                   return Container(
                     margin: const EdgeInsets.symmetric(vertical: 15),
                     decoration: BoxDecoration(
@@ -187,6 +170,7 @@ class _HomeViewState extends State<HomeView> {
                       child: InkWell(
                         onLongPress: () {
                           if (lastRead != null) {
+                            // Menampilkan dialog konfirmasi untuk menghapus surah terakhir yang dibaca.
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
@@ -230,7 +214,8 @@ class _HomeViewState extends State<HomeView> {
                                           const SizedBox(width: 10),
                                           OutlinedButton(
                                             onPressed: () {
-                                              _deleteBookmark(lastRead['id']);
+                                              _deleteBookmark(lastRead[
+                                                  'id']); //  memanggil function _deleteBookmark dengan parameter lastRead['id'], yang merupakan ID dari surah terakhir yang dibaca
                                               Navigator.of(context)
                                                   .pop(); // Menutup dialog setelah penghapusan
                                             },
@@ -258,13 +243,16 @@ class _HomeViewState extends State<HomeView> {
                         borderRadius: BorderRadius.circular(20),
                         onTap: () {
                           if (lastRead != null) {
+                            // Jika 'lastRead' tidak null
                             _onSurahTap(
+                              //Panggil fungsi '_onSurahTap' yang terdapat 2 argumen yaitu context dan sebuah map.
                               context,
                               {
-                                "name": lastRead["surah"]
-                                    .toString()
-                                    .replaceAll("+", "'"),
-                                "number": lastRead["number_surah"],
+                                "name": lastRead["surah"].toString().replaceAll(
+                                    "+",
+                                    "'"), // nama surah yang diambil dari data lastRead, kemudian diubah menjadi string dan karakter "+" diganti dengan tanda petik satu ("'").
+                                "number": lastRead[
+                                    "number_surah"], //nomor surah yang diambil dari data lastRead
                                 "bookmark": lastRead,
                               },
                             );
@@ -307,11 +295,14 @@ class _HomeViewState extends State<HomeView> {
                                       ],
                                     ),
                                     const SizedBox(height: 30),
-                                    if (lastRead != null)
+                                    if (lastRead !=
+                                        null) // Memeriksa apakah 'lastRead' tidak null
                                       Text(
-                                        lastRead['surah']
-                                            .toString()
-                                            .replaceAll("+", "'"),
+                                        lastRead[
+                                                'surah'] //Menampilkan nama surah dari 'lastRead'
+                                            .toString() // Mengonversi ke tipe String
+                                            .replaceAll("+",
+                                                "'"), // Mengganti karakter '+' dengan tanda petik satu ("'")
                                         style: GoogleFonts.poppins(
                                           color: appWhite,
                                           fontSize: 19,
@@ -321,8 +312,8 @@ class _HomeViewState extends State<HomeView> {
                                     const SizedBox(height: 10),
                                     Text(
                                       lastRead == null
-                                          ? "Belum ada data"
-                                          : " Ayat ${lastRead['ayat']}",
+                                          ? "Belum ada data" // Jika lastRead null, maka teks ini akan ditampilkan
+                                          : " Ayat ${lastRead['ayat']}", // Jika lastRead tidak null, maka teks ini akan ditampilkan dengan nomor ayat dari lastRead
                                       style: GoogleFonts.poppins(
                                         color: appWhite,
                                         fontSize: 12,
@@ -347,25 +338,19 @@ class _HomeViewState extends State<HomeView> {
                   Tab(
                     child: Text(
                       'Surah',
-                      style: GoogleFonts.poppins(
-                          fontWeight:
-                              FontWeight.bold), // Atur gaya font di sini
+                      style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
                     ),
                   ),
                   Tab(
                     child: Text(
                       'Tafsir',
-                      style: GoogleFonts.poppins(
-                          fontWeight:
-                              FontWeight.bold), // Atur gaya font di sini
+                      style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
                     ),
                   ),
                   Tab(
                     child: Text(
                       'Bookmark',
-                      style: GoogleFonts.poppins(
-                          fontWeight:
-                              FontWeight.bold), // Atur gaya font di sini
+                      style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
                     ),
                   ),
                 ],
@@ -375,29 +360,37 @@ class _HomeViewState extends State<HomeView> {
                   children: [
                     // Surah
                     FutureBuilder<List<Surah>>(
-                      future: viewModel.fetchSurah(),
+                      future: viewModel
+                          .fetchSurah(), //Di sini, viewModel.fetchSurah() adalah fungsi yang mengembalikan Future<List<Surah>>.
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
+                          //jika connectionState adalah ConnectionState.waiting (menunggu),
                           return const Center(
                             child: CircularProgressIndicator(
+                              // maka FutureBuilder akan mengembalikan widget yang menampilkan indikator loading.
                               valueColor:
                                   AlwaysStoppedAnimation<Color>(appPurpleDark),
                             ),
                           );
                         }
                         if (snapshot.hasError) {
+                          //memeriksa apakah ada kesalahan selama proses pengambilan data.
                           return Center(
-                            child: Text('Error: ${snapshot.error}'),
+                            child: Text(
+                                'Error: ${snapshot.error}'), //Teks yang ditampilkan adalah pesan kesalahan yang diambil dari snapshot.error
                           );
                         }
 
                         return ListView.builder(
-                          itemCount: snapshot.data!.length,
+                          itemCount: snapshot.data!
+                              .length, //snapshot.data berisi data yang diambil dari Future,
                           itemBuilder: (context, index) {
-                            Surah surah = snapshot.data![index];
+                            Surah surah = snapshot.data![
+                                index]; // Mengambil data Surah dari indeks tertentu di dalam data.
                             return ListTile(
                               onTap: () => _onSurahTap(context, {
+                                //memanggil fungsi _onSurahTap dengan memberikan konteks dan data terkait Surah (nama dan nomor) sebagai argumen.
                                 "name": surah.name.transliteration.id,
                                 "number": surah.number,
                               }),
@@ -412,7 +405,7 @@ class _HomeViewState extends State<HomeView> {
                                 ),
                                 child: Center(
                                     child: Text(
-                                  "${surah.number}",
+                                  "${surah.number}", // Menampilkan nomor Surah.
                                   style: GoogleFonts.poppins(),
                                 )),
                               ),
@@ -435,68 +428,13 @@ class _HomeViewState extends State<HomeView> {
                       },
                     ),
 
-                    // Juz
+                    // Tafsir
                     const TafsirForm(),
-                    // FutureBuilder<List<detail.Juz>>(
-                    //   future: viewModel.fetchJuz(),
-                    //   builder: (context, snapshot) {
-                    //     if (snapshot.connectionState ==
-                    //         ConnectionState.waiting) {
-                    //       return Center(
-                    //         child: CircularProgressIndicator(),
-                    //       );
-                    //     }
-                    //     if (snapshot.hasError) {
-                    //       return Center(
-                    //         child: Text('Error: ${snapshot.error}'),
-                    //       );
-                    //     }
 
-                    //     List<detail.Juz> juzs = snapshot.data!;
-
-                    //     return ListView.builder(
-                    //       itemCount: juzs.length,
-                    //       itemBuilder: (context, index) {
-                    //         detail.Juz juz = juzs[index];
-
-                    //         return ListTile(
-                    //           leading: Container(
-                    //             height: 40,
-                    //             width: 40,
-                    //             decoration: BoxDecoration(
-                    //               image: DecorationImage(
-                    //                 image:
-                    //                     AssetImage('assets/img/octagonal.png'),
-                    //               ),
-                    //             ),
-                    //             child: Center(child: Text("${index + 1}")),
-                    //           ),
-                    //           title: Text("Juz ${juz.juz}"),
-                    //           isThreeLine: true,
-                    //           subtitle: Column(
-                    //             mainAxisSize: MainAxisSize.min,
-                    //             crossAxisAlignment: CrossAxisAlignment.start,
-                    //             children: [
-                    //               Text(
-                    //                 "Mulai dari ${juz.juzStartInfo} ",
-                    //                 style:
-                    //                     TextStyle(color: Colors.grey.shade500),
-                    //               ),
-                    //               Text(
-                    //                 "Sampai ${juz.juzEndInfo} ",
-                    //                 style:
-                    //                     TextStyle(color: Colors.grey.shade500),
-                    //               ),
-                    //             ],
-                    //           ),
-                    //           onTap: () => _onJuzTap(context, juz),
-                    //         );
-                    //       },
-                    //     );
-                    //   },
-                    // ),
                     // Bookmark
-                    BookmarkListView(viewModel: viewModel),
+                    BookmarkListView(
+                        viewModel:
+                            viewModel), //widget BookmarkListView dengan view model viewModel yang diberikan sebagai properti.
                   ],
                 ),
               ),
@@ -504,110 +442,6 @@ class _HomeViewState extends State<HomeView> {
           ),
         ),
       ),
-    );
-  }
-}
-
-class BookmarkListView extends StatefulWidget {
-  final HomeViewModel viewModel;
-
-  const BookmarkListView({Key? key, required this.viewModel}) : super(key: key);
-
-  @override
-  _BookmarkListViewState createState() => _BookmarkListViewState();
-}
-
-class _BookmarkListViewState extends State<BookmarkListView> {
-  void _deleteBookmark(int id) {
-    widget.viewModel.deleteBookmark(id);
-    setState(() {
-      // Lakukan pembaruan tampilan atau data yang diperlukan di sini
-    });
-  }
-
-  void _onSurahTap(BuildContext context, Map<String, dynamic> surahData,
-      Map<String, dynamic>? bookmark) {
-    String surahName = surahData["name"];
-    int surahNumber =
-        surahData["number"]; // Pastikan ada "number" dalam data surah
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => DetailSurahView(
-          surah: {
-            "name": surahName,
-            "number": surahNumber,
-            // Kirimkan "number" juga
-          },
-          bookmark: bookmark,
-        ),
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder<List<Map<String, dynamic>>>(
-      future: widget.viewModel.fetchBookmark(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(
-            child: CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(appPurpleDark),
-            ),
-          );
-        }
-        if (snapshot.hasError) {
-          return Center(
-            child: Text('Error: ${snapshot.error}'),
-          );
-        }
-
-        return ListView.builder(
-          itemCount: snapshot.data?.length ?? 0,
-          itemBuilder: (context, index) {
-            Map<String, dynamic> data = snapshot.data![index];
-            return ListTile(
-              onTap: () => _onSurahTap(
-                  context,
-                  {
-                    "name": data["surah"].toString().replaceAll("+", "'"),
-                    "number": data["number_surah"],
-                    "bookmark": data,
-                  },
-                  data),
-              leading: Container(
-                height: 40,
-                width: 40,
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage('assets/img/octagonal.png'),
-                  ),
-                ),
-                child: Center(
-                    child: Text(
-                  "${index + 1}",
-                  style: GoogleFonts.poppins(),
-                )),
-              ),
-              title: Text(
-                data['surah'].toString().replaceAll("+", "'"),
-                style: GoogleFonts.poppins(),
-              ),
-              subtitle: Text(
-                "Ayat ${data['ayat']} - via ${data['via']} ",
-                style: GoogleFonts.poppins(color: Colors.grey),
-              ),
-              trailing: IconButton(
-                onPressed: () {
-                  _deleteBookmark(data['id']);
-                },
-                icon: const Icon(Icons.delete),
-              ),
-            );
-          },
-        );
-      },
     );
   }
 }

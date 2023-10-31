@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:mini_project/constans/open_ai.dart';
+import 'package:mini_project/utils/constans/open_ai.dart';
 import 'package:mini_project/models/open_ai.dart';
 
-class RecommendationsViewModel {
+class TafsirViewModel {
   Future<GptData> getTafsirQuran(
     BuildContext context,
     String surah,
-    // String ayat,
   ) async {
     String promptData =
         "berikan saya tafsir Al-Quran dari kementerian agama republik indonesia berdasarkan $surah ";
