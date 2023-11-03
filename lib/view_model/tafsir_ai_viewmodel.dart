@@ -7,7 +7,7 @@ import 'package:mini_project/models/open_ai.dart';
 class TafsirViewModel {
   Future<GptData> getTafsirQuran(
     BuildContext context,
-    String surah,
+    final String surah,
   ) async {
     String promptData =
         "berikan saya tafsir Al-Quran dari kementerian agama republik indonesia berdasarkan $surah ";

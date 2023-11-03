@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mini_project/view/home_view.dart';
+import 'package:mini_project/view/surah_home_view.dart';
 
 void main() {
   testWidgets('Check if AppBar title is displayed',

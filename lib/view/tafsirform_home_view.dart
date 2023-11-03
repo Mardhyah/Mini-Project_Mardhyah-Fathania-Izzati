@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mini_project/utils/constans/colors.dart';
 import 'package:mini_project/models/open_ai.dart';
-import 'package:mini_project/view_model/tafsir_ai.dart';
+import 'package:mini_project/view_model/tafsir_ai_viewmodel.dart';
 
 class TafsirForm extends StatefulWidget {
   const TafsirForm({Key? key}) : super(key: key);
@@ -15,6 +15,7 @@ class _TafsirFormState extends State<TafsirForm> {
   final TafsirViewModel modelview = TafsirViewModel();
   final TextEditingController tafsirController = TextEditingController();
   List<Choice> responseData = [];
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -25,12 +26,19 @@ class _TafsirFormState extends State<TafsirForm> {
           child: Column(
             children: [
               Form(
+                key: _formKey,
                 child: Column(
                   children: [
                     TextFormField(
                       controller: tafsirController,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Mohon isi surah terlebih dahulu.';
+                        }
+                        return null;
+                      },
                       decoration: InputDecoration(
-                        labelText: 'Surah',
+                        labelText: 'Nama Surah',
                         focusedBorder: InputBorder.none,
                         labelStyle: GoogleFonts.poppins(
                           color: text,
@@ -48,7 +56,7 @@ class _TafsirFormState extends State<TafsirForm> {
                                     responseData = [];
                                   });
                                 },
-                                icon: Icon(Icons.clear),
+                                icon: const Icon(Icons.clear),
                               )
                             : null,
                       ),
@@ -60,69 +68,26 @@ class _TafsirFormState extends State<TafsirForm> {
               const SizedBox(height: 10),
               ElevatedButton(
                 onPressed: () async {
-                  if (tafsirController.text.isEmpty) {
-                    showDialog(
-                      context: context,
-                      builder: (context) => AlertDialog(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                        title: Text(
-                          "Peringatan",
-                          style:
-                              GoogleFonts.poppins(fontWeight: FontWeight.bold),
-                        ),
-                        content: Text(
-                          "Mohon isi terlebih dahulu.",
-                          style: GoogleFonts.poppins(),
-                        ),
-                        actions: [
-                          ElevatedButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            style: ButtonStyle(
-                              backgroundColor:
-                                  MaterialStateProperty.all<Color>(appPurple),
-                              shape: MaterialStateProperty.all<
-                                  RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(
-                                      15.0), // Atur angka sesuai keinginan Anda
-                                ),
-                              ),
-                            ),
-                            child: Text(
-                              "OK",
-                              style: GoogleFonts.poppins(),
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                    return; // Tidak melanjutkan eksekusi jika ada teks yang kosong
-                  }
+                  if (_formKey.currentState!.validate()) {
+                    try {
+                      GptData newResponseData = await modelview.getTafsirQuran(
+                        context,
+                        tafsirController.text,
+                      );
 
-                  try {
-                    GptData newResponseData = await modelview.getTafsirQuran(
-                      context,
-                      tafsirController.text,
-                      // cameraController.text,
-                    );
-
-                    setState(() {
-                      responseData = newResponseData.choices;
-                    });
-                  } catch (error) {
-                    print(error);
+                      setState(() {
+                        responseData = newResponseData.choices;
+                      });
+                    } catch (error) {
+                      print(error);
+                    }
                   }
                 },
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all<Color>(appPurple),
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(
-                          15.0), // Atur angka sesuai keinginan Anda
+                      borderRadius: BorderRadius.circular(15.0),
                     ),
                   ),
                 ),
@@ -132,7 +97,6 @@ class _TafsirFormState extends State<TafsirForm> {
                 ),
               ),
               if (responseData.isNotEmpty) ...[
-                // const SizedBox(height: 30),
                 Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,

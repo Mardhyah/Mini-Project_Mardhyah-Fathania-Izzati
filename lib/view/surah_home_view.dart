@@ -3,9 +3,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mini_project/utils/constans/colors.dart';
 import 'package:mini_project/models/surah.dart';
-import 'package:mini_project/view/bookmark_view.dart';
+import 'package:mini_project/view/bookmark_home_view.dart';
 import 'package:mini_project/view/detail_surah_view.dart';
-import 'package:mini_project/view/tafsir_form.dart';
+import 'package:mini_project/view/tafsirform_home_view.dart';
 import 'package:mini_project/view_model/home_viewmodel.dart';
 
 class HomeView extends StatefulWidget {

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mini_project/view/introduction_view.dart';
-import 'package:mini_project/view/home_view.dart';
+import 'package:mini_project/view/surah_home_view.dart';
 
 void main() {
   testWidgets('IntroductionView UI Test', (WidgetTester tester) async {

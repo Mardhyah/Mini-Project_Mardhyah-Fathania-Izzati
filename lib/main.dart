@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mini_project/utils/constans/colors.dart';
-import 'package:mini_project/view/home_view.dart';
 import 'package:mini_project/view/introduction_view.dart';
+import 'package:mini_project/view/surah_home_view.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,10 +11,10 @@ class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
   @override
-  _MyAppState createState() => _MyAppState();
+  MyAppState createState() => MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

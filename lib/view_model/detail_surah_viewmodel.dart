@@ -84,13 +84,19 @@ class DetailSurahViewModel {
   }
 
   Future<detail.DetailSurah> fetchSurah(int surahNumber) async {
-    Uri url = Uri.parse("https://api.quran.gading.dev/surah/$surahNumber");
-    var res = await http.get(url);
+    try {
+      final url = Uri.parse("https://api.quran.gading.dev/surah/$surahNumber");
+      final res = await http.get(url);
 
-    Map<String, dynamic> data = json.decode(res.body)["data"];
-
-    detail.DetailSurah detailSurah = detail.DetailSurah.fromJson(data);
-
-    return detailSurah;
+      if (res.statusCode == 200) {
+        Map<String, dynamic> data = json.decode(res.body)["data"];
+        detail.DetailSurah detailSurah = detail.DetailSurah.fromJson(data);
+        return detailSurah;
+      } else {
+        throw Exception('Gagal memuat data surah: ${res.statusCode}');
+      }
+    } catch (error) {
+      throw Exception('Terjadi kesalahan saat memuat data surah');
+    }
   }
 }
